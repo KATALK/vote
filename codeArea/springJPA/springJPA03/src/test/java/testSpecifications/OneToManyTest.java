@@ -12,6 +12,11 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = "classpath:applicationContex.xml")
 public class OneToManyTest {
@@ -45,11 +50,12 @@ public class OneToManyTest {
          *      从客户的角度上：发送两条insert语句，发送一条更新语句更新数据库（更新外键）
          * 由于我们配置了客户到联系人的关系：客户可以对外键进行维护
          */
+        linkMan.setCustomer(customer);
         customer.getLinkMans().add(linkMan);
 
 
         customerDao.save(customer);
-        //linkManDao.save(linkMan);
+       linkManDao.save(linkMan);
     }
 
 
@@ -89,17 +95,17 @@ public class OneToManyTest {
     public void testAdd2() {
         //创建一个客户，创建一个联系人
         Customer customer = new Customer();
-        customer.setCustName("百度");
+        customer.setCustName("百度1");
 
         LinkMan linkMan = new LinkMan();
-        linkMan.setLkmName("小李");
+        linkMan.setLkmName("小李1");
 
 
         linkMan.setCustomer(customer);//由于配置了多的一方到一的一方的关联关系（当保存的时候，就已经对外键赋值）
         customer.getLinkMans().add(linkMan);//由于配置了一的一方到多的一方的关联关系（发送一条update语句）
 
         customerDao.save(customer);
-        linkManDao.save(linkMan);
+        //linkManDao.save(linkMan);
     }
 
     /**
@@ -132,7 +138,7 @@ public class OneToManyTest {
     @Rollback(false) //不自动回滚
     public void testCascadeRemove() {
         //1.查询1号客户
-        Customer customer = customerDao.findOne(1l);
+        Customer customer = customerDao.findOne(3l);
         //2.删除1号客户
         customerDao.delete(customer);
     }

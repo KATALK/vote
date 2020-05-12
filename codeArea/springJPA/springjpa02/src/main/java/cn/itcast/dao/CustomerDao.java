@@ -18,13 +18,13 @@ public interface CustomerDao extends JpaRepository<Customer,Long>, JpaSpecificat
     /**
      * 多占位符查询
      * 要指定占位符的位置
-     * @param cusname
+     * @param cusName
      * @param id
      * @return
      * @throws Exception
      */
     @Query(value = "from Customer where custName = ?1 and custId = ?2")
-    public Customer findCus(String cusname,Long id) throws Exception;
+    public Customer findCus(String cusName,Long id) throws Exception;
 
 
     @Query(value = "update Customer set custName = ?1 where  custId = ?2")
@@ -48,7 +48,7 @@ public interface CustomerDao extends JpaRepository<Customer,Long>, JpaSpecificat
      * findBy后面加属性名，首字母大写
      * 不用谢@Query语句
      */
-    public Customer findByCustNameAndAndCustId(String cusName,Long id) throws Exception;
+    public Customer findByCustNameAndCustId(String cusName,Long id) throws Exception;
     /**
      * 方法命名规则模糊查询
      * findBy后面加属性名，首字母大写
