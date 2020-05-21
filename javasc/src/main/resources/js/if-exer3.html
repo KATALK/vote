@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8" />
+		<title>if练习3</title>
+		<script type="text/javascript">
+			/*
+			 * 	编写程序，由键盘输入三个整数分别存入变量num1、num2、num3，
+			 * 	对他们进行排序，并且从小到大输出。
+			 */
+			const num1 =122;
+			const num2 = -1;
+			const num3=89;
+			var arr = [];
+			arr.push(num1);
+			arr.push(num2);
+			arr.push(num3);
+			var tamp=0;
+			for (var i =0;i<arr.length-1;i++) {
+				for (var j=i;j<arr.length ;j++){
+					if (arr[j]>arr[i]){
+						tamp=arr[j];
+						arr[j]=arr[i];
+						arr[i]=tamp;
+					}
+				}
+			}
+			alert(arr[2]+":"+arr[1]+":"+arr[0])
+		</script>
+	</head>
+	<body>
+		
+	</body>
+</html>

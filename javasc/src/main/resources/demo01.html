@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<p>创建JavaScriptd对象</p>
+<!--修改p标签内容-->
+<button onclick="document.getElementById('demo').innerHTML=Date()">现在的时间是?</button>
+<p id="demo"></p>
+<!--代码将修改自身元素的内容 (使用 this.innerHTML): -->
+<button onclick="this.innerHTML=Date()">现在的时间是?</button><br>
+<!--通过事件属性来调用-->
+<button onclick="displayDate()">点击我</button>
+<p id="demo1"></p>
+<script>
+
+    function displayDate() {
+        document.getElementById("demo1").innerHTML=Date();
+    }
+    /*myfunction();
+    document.getElementById("demo").innerHTML="HAHA:"+window.vaa;
+   function myfunction() {
+       vaa = "我是全局变量";
+   }*/
+
+
+
+</script>
+</body>
+</html>
