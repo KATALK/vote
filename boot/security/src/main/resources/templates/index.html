@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+    <meta charset="UTF-8">
+    <title>欢迎进入电影首页</title>
+</head>
+<body>
+<title>欢迎进入电影首页</title>
+<div sec:authorize="isAnonymous()">
+    <h2 align="center">游客你好，如果想看电影<a th:href="@{/userLogin}">请登录</a></h2>
+</div>
+<div sec:authorize="isAuthenticated()">
+    <h2 align="center">
+        <span sec:authentication="name" style="color: #007bff"></span>
+        您好，您的用户权限为<span sec:authentication="principal.authorities" style="color: darkkhaki"></span>,您有权观看一下电影
+    </h2>
+    <form th:action="@{/mylogout}" method="post">
+        <input th:type="submit" th:value="注销">
+    </form>
+</div>
+<hr>
+<div sec:authorize="hasAnyRole('vip','common')">
+    <h3>普通电影</h3>
+    <ul>
+        <li><a th:href="@{/detail/common/1}">飞驰人生</a></li>
+        <li><a th:href="@{/detail/common/2}">夏洛特的烦恼</a></li>
+    </ul>
+</div>
+
+<div sec:authorize="hasAnyAuthority('ROLE_vip')">
+    <h3>VIP专享</h3>
+    <ul>
+        <li><a th:href="@{/detail/vip/1}">速度与激情</a></li>
+        <li><a th:href="@{/detail/vip/2}">星球崛起</a></li>
+    </ul>
+</div>
+</body>
+</html>
