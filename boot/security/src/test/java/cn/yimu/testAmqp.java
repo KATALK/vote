@@ -20,6 +20,7 @@ public class testAmqp {
     @Autowired
     private RabbitTemplate rabbitTemplate;
 
+
     @Test
     public void amqpAdmin(){
         amqpAdmin.declareExchange(new FanoutExchange("fanout_exchange"));
