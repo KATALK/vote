@@ -1,5 +1,6 @@
 package com.seventh.group.repository;
 
+import com.seventh.group.entity.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 /**
@@ -7,5 +8,5 @@ import org.springframework.data.jpa.repository.JpaRepository;
  * @Data 2020/9/10--18:33
  * @Version 1.0
  */
-public interface UserRepository extends JpaRepository<UserRepository,Integer> {
+public interface UserRepository extends JpaRepository<User,Integer> {
 }
