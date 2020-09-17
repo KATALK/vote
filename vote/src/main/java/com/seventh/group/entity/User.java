@@ -27,15 +27,13 @@ public class User {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;//主键
 
-    @NotEmpty(message = "用户名不能为空")
-    @Length(min = 2,max = 50,message = "用户名在长度在2到50之间")
     private String username;//用户名
     @NotNull(message = "密码不能为空")
     private String password;//密码
 
     private int type;//
 
-    private int status;
+    private int status;//状态
 
     private long number;//投票数
     @ManyToMany(mappedBy = "users")
