@@ -1,6 +1,6 @@
 package com.seventh.group.repository;
 
-import com.seventh.group.entity.Option;
+import com.seventh.group.Entity.Option;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 /**

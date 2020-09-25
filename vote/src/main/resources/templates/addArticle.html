@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>addArticle</title>
+    <script src="https://cdn.jsdelivr.net/npm/jquery@3.2/dist/jquery.min.js"></script>
+</head>
+<body>
+<script type="text/javascript">
+    function addArticle(form) {
+        if (form.title.value==''){
+            alert("请输入投票标题！");
+            form.title.focus();
+            return false;
+        }
+        if (form.content.value==''){
+            alert("content内容为空！");
+            form.content.focus();
+            return false;
+        }
+        return true;
+    }
+</script>
+<script>
+    $(document).ready(function() {
+        var MaxInputs    = 8; //maximum input boxes allowed
+        var InputsWrapper  = $("#InputsWrapper"); //Input boxes wrapper ID
+        var AddButton    = $("#AddMoreFileBox"); //Add button ID
+        var x = InputsWrapper.length; //initlal text box count
+        var FieldCount=1; //to keep track of text box added
+        $(AddButton).click(function (e) //on add input button click
+        {
+            if(x <= MaxInputs) //max input box allowed
+            {
+                FieldCount++; //text box added increment
+                //add input box
+                $(InputsWrapper).append('<div><input type="text" name="content" id="field_'+ FieldCount +'" placeholder="请输入选项内容...... '+ FieldCount +'"/><a href="#"  class="removeclass"><input type="button" value="删除"></a></div>');
+                x++; //text box increment
+            }
+            return false;
+        });
+        $("body").on("click",".removeclass", function(e){ //user click on remove text
+            if( x > 2 ) {
+                $(this).parent('div').remove(); //remove text box
+                x--; //decrement textbox
+            }
+            return false;
+        })
+    });
+</script>
+
+<div style="margin: 0 auto;width: auto;height: auto;background-color: pink">
+    <form action="/article.do/add" method="post" name="form" onsubmit="return addArticle(this)">
+        <input type="text" name="title" placeholder="请输入投票标题......"><br>
+        <a href="#"  id="AddMoreFileBox" class="btn btn-info">添加更多的选项</a></span></p>
+        <div id="InputsWrapper">
+            <div><input type="text" name="content" id="field_1" placeholder="请输入选项内容......"/><a href="#"  class="removeclass"><input type='button' value='删除'></a></div>
+        </div>
+        <input type="submit" value="添加">
+    </form>
+</div>
+</body>
+</html>

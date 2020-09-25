@@ -7,12 +7,26 @@
 
 	</head>
 	<body>
-
+<script type="text/javascript">
+	function formLogin(form) {
+		if (form.username.value==''){
+			alert("用户名为空，请输入用户名！")
+			form.username.focus();
+			return false;
+		}
+		if (form.password.value==''){
+			alert("密码为空，请输入密码！");
+			form.password.focus();
+			return false;
+		}
+		return true;
+	}
+</script>
 	<div class="main">
 		<div class="login">
 			<div class="inset">
 				<!--start-main-->
-				<form action="/user.do/login" method="post">
+				<form action="/user.do/login" method="post" name="form" onsubmit="return formLogin(this)">
 					<div>
 						<h2>管理登录</h2>
 						<span><label>用户名</label></span>
@@ -25,6 +39,7 @@
 					</div>
 					<div class="sign">
 						<input type="submit" value="登录" class="submit" />
+						<button><a href="/user.do/toRegister">注册</a></button>
 					</div>
 				</form>
 			</div>
