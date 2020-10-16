@@ -5,6 +5,9 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.io.Serializable;
+import java.math.BigInteger;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Objects;
@@ -18,7 +21,7 @@ import java.util.Objects;
 
 @Entity
 @Table(name = "t_article")
-public class Article {
+public class Article implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -31,11 +34,13 @@ public class Article {
     @Temporal(TemporalType.TIMESTAMP)
     private Date createTime;//文章创建时间
 
-    @ManyToMany
-    @JoinTable(name = "user_article_option",joinColumns = {@JoinColumn(name = "article_id")},inverseJoinColumns = {@JoinColumn(name = "user_id")})
-    private List<User> users ;
+    private int count;//记录投票数
+    @ManyToMany(cascade = CascadeType.ALL,targetEntity = User.class)
+    @JoinTable(name = "user_article",joinColumns = {@JoinColumn(name = "article_id",referencedColumnName = "id")}
+    ,inverseJoinColumns = {@JoinColumn(name = "user_id",referencedColumnName = "id")})
+    private List<User> users =new ArrayList<>();
 
-    @OneToMany(mappedBy = "article",cascade = CascadeType.ALL,fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "article",cascade = CascadeType.ALL,fetch = FetchType.EAGER)
     private List<Option> options ;
 
     public int getId() {
@@ -90,41 +95,23 @@ public class Article {
         super();
     }
 
-    public Article(String title, int type, Date createTime, List<User> users, List<Option> options) {
-        this.title = title;
-        this.type = type;
-        this.createTime = createTime;
-        this.users = users;
-        this.options = options;
+    public int getCount() {
+        return count;
     }
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        Article article = (Article) o;
-        return id == article.id &&
-                type == article.type &&
-                title.equals(article.title) &&
-                createTime.equals(article.createTime) &&
-                users.equals(article.users) &&
-                options.equals(article.options);
+    public void setCount(int count) {
+        this.count = count;
     }
 
-    @Override
-    public int hashCode() {
-        return Objects.hash(id, title, type, createTime, users, options);
-    }
-
-    @Override
-    public String toString() {
-        return "Article{" +
-                "id=" + id +
-                ", title='" + title + '\'' +
-                ", type=" + type +
-                ", createTime=" + createTime +
-                ", users=" + users +
-                ", options=" + options +
-                '}';
-    }
+    //    @Override
+//    public String toString() {
+//        return "Article{" +
+//                "id=" + id +
+//                ", title='" + title + '\'' +
+//                ", type=" + type +
+//                ", createTime=" + createTime +
+//                ", users=" + users +
+//                ", options=" + options +
+//                '}';
+//    }
 }

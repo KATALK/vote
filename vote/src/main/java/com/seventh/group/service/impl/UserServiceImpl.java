@@ -31,6 +31,17 @@ public class UserServiceImpl implements UserService {
         return false;
     }
 
+    @Override
+    public User selectByUsername(String username) {
+        return  userRepository.findByUsername(username);
+    }
+
+    //根据用户名查询用户关联过的文章id集合
+    @Override
+    public List<Integer> selectArticleIdsByUsername(String username) {
+        return userRepository.selectArticleIdsByUsername(username);
+    }
+
     //查询所有
     @Override
     public List<User> findAllUser() {

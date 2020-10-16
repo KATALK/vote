@@ -1,16 +1,25 @@
 package com.seventh.group.controller;
 
 
+import com.seventh.group.Entity.Article;
 import com.seventh.group.Entity.User;
+import com.seventh.group.service.ArticleService;
 import com.seventh.group.service.UserService;
 
 import com.seventh.group.utils.MD5Util;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.servlet.http.HttpSession;
+import java.util.List;
 
 /**
  * @Author EdiMen
@@ -24,17 +33,34 @@ public class UserController {
     @Autowired
     private UserService userService;
 
-    /**
-     * 跳转到注册页面
-     *
-     * @return
-     */
+
+    @Autowired
+    private ArticleService articleService;
 
     @GetMapping("/index")
-    public String index() {
+    public String index(@RequestParam(value = "start",defaultValue = "0")Integer start,
+                        @RequestParam(value = "limit",defaultValue = "7")Integer limit, Model model,HttpSession session) {
+        User user = (User)session.getAttribute("user");
+        start = start <0 ? 0:start;
+        Sort sort = Sort.by(Sort.Direction.DESC,"id");
+        Pageable pageable = PageRequest.of(start,limit,sort);
+        Page<Article> articlePage = articleService.listArticle(pageable);
+        if (null!=user){
+            List<Integer> articleIds = userService.selectArticleIdsByUsername(user.getUsername());
+            if (articleIds.get(0)!=null){
+                int i=0;
+                for ( i=0;i<articlePage.getContent().size();i++){
+                    for (int k=0;k<articleIds.size();k++){
+                        if(articlePage.getContent().get(i).getId() == articleIds.get(k)){
+                            articlePage.getContent().get(i).setType(1);//把类型设置为1，告知前端该文章用户已经投票过
+                        }
+                    }
+                }
+            }
+        }
+        model.addAttribute("articleList", articlePage);
         return "index";
     }
-
     @GetMapping("/toLogin")
     public String login() {
         return "login";
@@ -97,7 +123,7 @@ public class UserController {
     public String logout(HttpSession session) {
         session.removeAttribute("user");
         session.setAttribute("user",null);
-        return "index";
+        return "redirect:/";
     }
 
 }

@@ -1,9 +1,12 @@
 package com.seventh.group.repository;
 
 import com.seventh.group.Entity.Article;
+import org.springframework.data.domain.Page;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.jpa.repository.QueryHints;
 
+import javax.persistence.QueryHint;
 import java.util.List;
 
 /**
@@ -12,6 +15,8 @@ import java.util.List;
  * @Version 1.0
  */
 public interface ArticleRepository extends JpaRepository<Article,Integer> {
+    
     @Query("select b from  Article b order by b.createTime desc ")
     List<Article> findAll();
+
 }

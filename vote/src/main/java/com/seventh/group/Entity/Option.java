@@ -5,6 +5,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.io.Serializable;
 
 /**
  * @Author EdiMen
@@ -13,7 +14,7 @@ import javax.persistence.*;
  */
 @Entity
 @Table(name = "t_option")
-public class Option {
+public class Option implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -58,12 +59,4 @@ public class Option {
         this.article = article;
     }
 
-    @Override
-    public String toString() {
-        return "Option{" +
-                "id=" + id +
-                ", content='" + content + '\'' +
-                ", article=" + article +
-                '}';
-    }
 }

@@ -4,18 +4,30 @@ package com.seventh.group;
 
 import com.seventh.group.Entity.Article;
 import com.seventh.group.Entity.Option;
+import com.seventh.group.Entity.User;
 import com.seventh.group.repository.ArticleRepository;
 import com.seventh.group.repository.OptionRepository;
+import com.seventh.group.repository.UserRepository;
+import com.seventh.group.service.ArticleService;
+import com.seventh.group.utils.DataUtils;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.test.annotation.Rollback;
 import org.springframework.test.context.junit4.SpringRunner;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
+import java.util.stream.Stream;
 
 /**
  * @Author EdiMen
@@ -31,6 +43,9 @@ public class test {
 
 
     @Autowired
+    private UserRepository userRepository;
+
+    @Autowired
     private OptionRepository optionRepository;
 
     @Test
@@ -39,16 +54,25 @@ public class test {
         article.setTitle("2020年娱乐圈谁的演技最厉害");
         article.setCreateTime(new Date());
         article.setType(0);
-        Option option = new Option();
-        option.setContent("我不喜欢你");
-        Option option01 = new Option();
-        option01.setContent("我不喜欢");
+        List<String> list = Arrays.asList("12","34","56");
         List<Option> options = new ArrayList<>();
-        options.add(option);
-        options.add(option01);
-        option01.setArticle(article);
-        option.setArticle(article);
+        for (int i=0;i<list.size();i++){
+            Option option = new Option();
+            option.setContent(list.get(i));
+            option.setArticle(article);
+            options.add(option);
+        }
         article.setOptions(options);
+//        Option option = new Option();
+//        option.setContent("我不喜欢你");
+//        Option option01 = new Option();
+//        option01.setContent("我不喜欢");
+//        List<Option> options = new ArrayList<>();
+//        options.add(option);
+//        options.add(option01);
+//        option01.setArticle(article);
+//        option.setArticle(article);
+//        article.setOptions(options);
        // articleRepository.save(article);
 //        optionRepository.saveAll(Arrays.asList(option,option01));
 //        option.setArticleId(article.getId());
@@ -87,5 +111,75 @@ public class test {
         String string = createTime.toString();
         System.out.println(string);
         System.out.println(new Date().toString());
+    }
+
+    @Test
+    public void demo04(){
+        List<Article> all = articleRepository.findAll();
+       for (int i=0;i<all.size();i++){
+           System.out.println(all.get(i).getTitle());
+           for (int k = 0;k<all.get(i).getOptions().size();k++){
+               System.out.println(all.get(i).getOptions().get(k).getContent());
+           }
+           System.out.println("=================================             ");
+       }
+    }
+
+//    @Transactional
+//    @Rollback(false)
+    @Test
+    public void demo05(){
+        User user = userRepository.findById(40).get();
+//        Article article = articleRepository.findById(14).get();
+        Article article1 = articleRepository.findById(15).get();
+        article1.setCount(article1.getCount()+1);
+//        article.setUsers(Arrays.asList(user));
+        article1.setUsers(Arrays.asList(user));
+
+//        user.getArticles().add(article);
+//        user.getArticles().add(article1);
+      articleRepository.save(article1);
+    }
+
+    @Transactional
+    @Rollback(false)
+    @Test
+    public void demo06(){
+        User user = userRepository.findById(40).get();
+//        List<Article> articles = user.getArticles();
+//        System.out.println(articles.size());
+//        Article article = articleRepository.findById(12).get();
+//        int size = article.getUsers().size();
+//        System.out.println(size);
+        List<Article> articles = user.getArticles();
+        for (int i = 0;i<articles.size();i++){
+            User user1 = articles.get(i).getUsers().get(0);
+            System.out.println(user1.getUsername());
+        }
+
+    }
+
+    @Autowired
+    private ArticleService articleService;
+
+    @Test
+    public void demo07(){
+        List<Integer> integers = userRepository.selectArticleIdsByUsername("admin");
+
+        for (int i = 0;i<integers.size();i++){
+            Integer integer = integers.get(i);
+           if (integer==null){
+               System.out.println("========");
+           }else {
+               System.out.println("+++++++++++");
+           }
+        }
+//        Pageable pageable = PageRequest.of(0,10, Sort.by("count"));
+//        Page<Article> articlePage = articleService.listArticle(pageable);
+//        List<Article> articles = articlePage.toList();
+//        Page<Article> articlePage1 = DataUtils.listToPage(articles, pageable);
+//        Article article = articlePage1.getContent().get(7);
+//        System.out.println(article.getCount());
+
     }
 }

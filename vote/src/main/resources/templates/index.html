@@ -1,21 +1,94 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
-<body>
-<span th:if="${session.user!=null}">
-    <h1 th:text="${session.user.username}">&nbsp;</h1>
-    <a href="/user.do/logout">退出登录</a>
-</span>
-<span th:if="${session.user==null}">
-    <h1>&nbsp;</h1>
-<a href="/user.do/toLogin">返回登录</a>
-</span>
-<!--<a href="/user.do/toLogin">返回登录</a>-->
-<a href="/baidu">点击我去百度</a>
-<a href="/click">click me</a>
-<h1>这是首页</h1>
-</body>
+	<head>
+		<meta charset="UTF-8" http-equiv="content-type" content="text/html">
+		<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1" />
+		<title>首页</title>
+		<link href="css/bootstrap.min.css" th:href="@{/css/bootstrap.min.css}" rel="stylesheet"/>
+		<link href="css/index.css"rel="stylesheet" th:href="@{/css/index.css}" type="text/css" media="all" />
+		
+		<style type="text/css">
+			html,body {
+			    height: 100%;
+			    margin: 0;
+			    padding: 0;
+			}
+			.content {
+			    min-height: 100%;
+			    background: rgb(107, 238, 255);
+			    overflow: hidden;
+			}
+			.main {
+			    padding-bottom: 50px;
+			}
+			.footer {
+			    height: 50px;
+			    line-height: 50px;
+			    background: rgb(189, 181, 181);
+			    margin-top: -50px;
+			    
+			}
+		</style>
+	</head>
+	<body>
+		<div class="top" style="background-color: #1e7e34">
+                   <center> 
+                    <ul>
+	                    <li>
+	                    	<span th:if="${session.user==null}">
+							   &nbsp;
+							<a href="/user.do/toLogin">点击登录</a>
+							</span>
+	                    </li>                   
+	                    <li>
+	                        <span th:if="${session.user!=null}" >
+	                          当前用户:<p th:text="${session.user.username}">&nbsp;</p>
+							</span>
+						</li>
+						<li>
+							<span th:if="${session.user!=null}"  style="align-content: center">
+							<a href="/user.do/logout">注销</a>
+							</span>
+						</li>
+						<div>
+							<li>
+								<a href="/article.do/add" style="color: purple;font-size: 18px;margin-top: 21px">发布投票</a>
+							</li>
+						</div>
+                    <h1>欢迎来到投票系统~！</h1>
+						<li>
+							<form action="/baidu" method="get">
+								<input type="text" height="20px" placeholder="自己去百度......"><input type="submit" value="百度">
+							</form>
+
+							&nbsp;<a href="/baidu" style="color: deeppink">点击我去百度</a>
+						</li>
+                      </ul>
+                    </center>                      
+        </div>
+		<div id="photos">
+			<img id="first_slide_photo" src="img/timg.jpg" th:src="@{/img/timg.jpg}"/>
+			<img src="img/03.jpg" th:src="@{/img/03.jpg}"/>
+			<img src="img/04.jpg" th:src="@{/img/04.jpg}"/>
+		</div>
+		<div class="content">
+			<div th:each="article : ${articleList.content}" align="center" style="width: 440px;height: auto;background-color: #0091e6">
+				<span th:text="${article.title}"  style="font-size: 20px;color: hotpink"></span>
+				<span th:text="${'投票数:'+article.count}" style="font-size: 9px">0</span>
+				<button th:if="${article.type==0}"><a  th:href="@{/article.do/{id}(id=${article.id})}">可投票</a></button>
+				<button th:unless="${article.type==0}">
+					<a href="#">您已投票</a>
+				</button>
+			</div>
+			<div style="width: 440px;height: auto;background-color: #125EB2" align="center">
+				<a th:href="@{/user.do/index(start=0)}">[首页]</a>
+				<a th:if="${not articleList.isFirst()}" th:href="@{/user.do/index(start=${articleList.number-1})}">[上页]</a>
+				<a th:if="${not articleList.isLast()}" th:href="@{/user.do/index(start=${articleList.number+1})}">[下页]</a>
+				<a th:href="@{/user.do/index(start=${articleList.totalPages-1})}">[尾页]</a>
+			</div>
+    </div>
+    <div class="footer">
+        <div align="center">2017软件工程实训@Edimen</div>
+    </div>
+	</body>
 </html>

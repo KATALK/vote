@@ -6,6 +6,7 @@ import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -17,7 +18,7 @@ import java.util.List;
 
 @Entity
 @Table(name = "t_user")
-public class User {
+public class User implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -32,7 +33,9 @@ public class User {
     private int status;//状态
 
     private long number;//投票数
-    @ManyToMany(mappedBy = "users")
+    @ManyToMany(cascade = CascadeType.ALL,targetEntity = Article.class,fetch = FetchType.EAGER)
+    @JoinTable(name = "user_article",joinColumns = {@JoinColumn(name = "user_id",referencedColumnName = "id")}
+            ,inverseJoinColumns = {@JoinColumn(name = "article_id",referencedColumnName = "id")})
     private List<Article> articles = new ArrayList<>();
 
     public User() {

@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <title>addArticle</title>
@@ -34,7 +34,7 @@
             {
                 FieldCount++; //text box added increment
                 //add input box
-                $(InputsWrapper).append('<div><input type="text" name="content" id="field_'+ FieldCount +'" placeholder="请输入选项内容...... '+ FieldCount +'"/><a href="#"  class="removeclass"><input type="button" value="删除"></a></div>');
+                $(InputsWrapper).append('<div><input type="text" name="content" id="field_'+ FieldCount +'" placeholder="请输入选项内容...... '+ FieldCount +'"/><a href="#" \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\ \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\ class="removeclass"><input type="button" value="删除"></a></div>');
                 x++; //text box increment
             }
             return false;
@@ -48,9 +48,9 @@
         })
     });
 </script>
-
+<h1 th:unless="${#strings.isEmpty(msg)}" th:text="${msg}">&nbsp;</h1>
 <div style="margin: 0 auto;width: auto;height: auto;background-color: pink">
-    <form action="/article.do/add" method="post" name="form" onsubmit="return addArticle(this)">
+    <form action="/article.do/addArticleAndOption" method="post" name="form" onsubmit="return addArticle(this)">
         <input type="text" name="title" placeholder="请输入投票标题......"><br>
         <a href="#"  id="AddMoreFileBox" class="btn btn-info">添加更多的选项</a></span></p>
         <div id="InputsWrapper">

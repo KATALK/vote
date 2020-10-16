@@ -15,4 +15,8 @@ public interface UserService {
 
     public User loginCheck(String username,String password);
     public boolean checkRegisterByUsername(String username);
+
+    User selectByUsername(String username);
+
+    List<Integer> selectArticleIdsByUsername(String username);
 }
